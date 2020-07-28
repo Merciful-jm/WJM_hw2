@@ -7,14 +7,14 @@ import numpy as np
 import time
 #import matplotlib.pyplot as plt
 
-def sum_str(str_state):
+def sum_str(str_state):# To calculate the Summer of up-state.
     list_state = list(str_state)
     sum_state = 0
     for i in list_state:
         sum_state = sum_state + int(i)
     return sum_state    
 
-#flip state
+
 def flip(a_spin_state, i, j, a_dict):
     b_spin_state = list(a_spin_state)#for change str ,we change its class to list
     b_spin_state[i] = a_spin_state[j]
@@ -24,7 +24,7 @@ def flip(a_spin_state, i, j, a_dict):
     return b
 
 #find degenerate ground state, sub_degeneracy
-def find_ground_state_index(eig):
+""" def find_ground_state_index(eig):
     min_eig = np.min(eig)
     eig_min_index = []
     for e_index,e in enumerate(eig):
@@ -32,10 +32,10 @@ def find_ground_state_index(eig):
             eig_min_index.append(e_index)
     sub_degeneracy = len(eig_min_index)
     return eig_min_index,sub_degeneracy
-
+ """
 
 start_time = time.time()
-N = 10
+N = 5
 a_dict = {}
 H_all_sub = []
 all_sub_dict = []
@@ -76,7 +76,7 @@ for n in range(N+1):
                 H_sub[a_sub, b_sub]=0.5
     #save subspace hamiltonian
     e, v = np.linalg.eig(H_sub)
-    #print(e)
+    print(e)
     H_all_sub.append(H_sub)
 end_time = time.time()
 print('program time:{:.3f} s.'.format(end_time-start_time))
