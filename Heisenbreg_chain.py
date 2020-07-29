@@ -12,7 +12,7 @@ def sum_str(str_state):# To calculate the Summer of up-state.
     sum_state = 0
     for i in list_state:
         sum_state = sum_state + int(i)
-    return sum_state    
+    return sum_state 
 
 
 def flip(a_spin_state, i, j, a_dict):
@@ -22,17 +22,6 @@ def flip(a_spin_state, i, j, a_dict):
     b_spin_state=''.join(b_spin_state)
     b = a_dict[b_spin_state]
     return b
-
-#find degenerate ground state, sub_degeneracy
-""" def find_ground_state_index(eig):
-    min_eig = np.min(eig)
-    eig_min_index = []
-    for e_index,e in enumerate(eig):
-        if abs(e-min_eig) < 0.01*abs(min_eig):
-            eig_min_index.append(e_index)
-    sub_degeneracy = len(eig_min_index)
-    return eig_min_index,sub_degeneracy
- """
 
 start_time = time.time()
 N = 5
