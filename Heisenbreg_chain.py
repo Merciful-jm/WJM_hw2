@@ -65,7 +65,7 @@ for n in range(N+1):
                 H_sub[a_sub, b_sub]=0.5
     #save subspace hamiltonian
     e, v = np.linalg.eig(H_sub)
-    print(e)
+    print(v)
     H_all_sub.append(H_sub)
 end_time = time.time()
 print('program time:{:.3f} s.'.format(end_time-start_time))
