@@ -4,38 +4,55 @@ using LinearAlgebra
 #= function sum_string(str_state) #Try to calculate the up-states number.
 
 end =#
-function flip(a_spin_state, i, j)
-    if  i == 1
-        i = 0
+
+
+function flip(a, i, j)
+    f = split(st[a],"")
+    if  st[a][i] == 1
+        f[i] = "0"
+        f[j] = "1"
+        
     else
-        i = 1
+        f[j] = "0"
+        f[i] = "1"
     end
-    if  j == 1
-        j = 0
-    else
-        j = 1
-    end
+    global b = st_rv[join(f)] 
 end
-function lable_states(N)#The N indicate the length of the Heisenbreg
-    states = Dict{Int64, String}()
+
+function lable_states(N, st, st_rv)#The N indicate the length of the Heisenbreg
+    # st = Dict{Int64, String}()#Here "st" stand for the "states"
     for n in 0:(2^N-1)
-        nn = string(SubString(bitstring(n),(64+1-N:64)))#cut extra part
-        states[n] = nn
+        nn = string(n, base = 2, pad = N)#cut extra part
+        st[(n+1)] = nn
+    end
+    # st_rv = Dict{String, Int64}()
+    for n in 0:(2^N-1)
+        nn = string(n, base = 2, pad = N)#cut extra part
+        st_rv[nn] = (n+1)
     end
 end
 
 
-N = 4
+global N = 4
+
 println("The length of Heisenbreg chain:", N)
+st = Dict{Int64, String}()
+st_rv = Dict{String, Int64}()
+lable_states(N, st, st_rv)
 H = zeros(2^N, 2^N)
 for a in 1:2^N
     for i in 1:N
         j = mod1(i+1, N)
-        if states[a][i] == states[a][j]
+        if st[a][i] == st[a][j]
             H[a,a] = H[a,a] + 0.25
         else
             H[a,a] = H[a,a] - 0.25
-            b = flip()
+            flip(a, i, j)
+            H[a,b] = 0.5
+            # println("The length of Heisenbreg chain:", N)
+            
         end
     end
 end
+e_v = eigvals(H)
+println(e_v)
