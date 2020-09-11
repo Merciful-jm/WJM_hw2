@@ -24,7 +24,7 @@ def flip(a_spin_state, i, j, a_dict):
     return b
 
 start_time = time.time()
-N = 14
+N = 4
 a_dict = {}
 H_all_sub = []
 all_sub_dict = []
@@ -65,7 +65,7 @@ for n in range(N+1):
                 H_sub[a_sub, b_sub]=0.5
     #save subspace hamiltonian
     e, v = np.linalg.eig(H_sub)
-    # print(v)
+    print(v)
     H_all_sub.append(H_sub)
 end_time = time.time()
 print('program time:{:.3f} s.'.format(end_time-start_time))

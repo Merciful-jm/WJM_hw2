@@ -1,6 +1,5 @@
 #= Createn By WJM in Sep.7.2020 =#
 using LinearAlgebra
-
 #= function sum_string(str_state) #Try to calculate the up-states number.
 
 end =#
@@ -55,4 +54,4 @@ for a in 1:2^N
     end
 end
 e_v = eigvals(H)
-println(e_v)
+print(e_v)
