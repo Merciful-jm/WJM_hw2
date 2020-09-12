@@ -1,19 +1,16 @@
 #= Createn By WJM in Sep.7.2020 =#
 using LinearAlgebra
 #= function sum_string(str_state) #Try to calculate the up-states number.
-
 end =#
-
-
 function flip(a, i, j)
     f = split(st[a],"")
-    if  st[a][i] == 1
+    if  st[a][i] == '1'
         f[i] = "0"
         f[j] = "1"
         
     else
-        f[j] = "0"
         f[i] = "1"
+        f[j] = "0"
     end
     global b = st_rv[join(f)] 
 end
@@ -32,7 +29,7 @@ function lable_states(N, st, st_rv)#The N indicate the length of the Heisenbreg
 end
 
 
-global N = 4
+global N = 13
 
 println("The length of Heisenbreg chain:", N)
 st = Dict{Int64, String}()
@@ -48,10 +45,10 @@ for a in 1:2^N
             H[a,a] = H[a,a] - 0.25
             flip(a, i, j)
             H[a,b] = 0.5
-            # println("The length of Heisenbreg chain:", N)
-            
         end
+        # show(stdout, "text/plain", H);println()
     end
 end
+# show(stdout, "text/plain", H);println()
 e_v = eigvals(H)
 print(e_v)

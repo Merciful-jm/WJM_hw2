@@ -5,6 +5,21 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "type": "julia",
+            "request": "launch",
+            "name": "Launch Julia tests",
+            "program": "${workspaceFolder}/test/runtests.jl",
+            "stopOnEntry": true
+        },
+
+    {
+        "type": "julia",
+        "request": "launch",
+        "name": "Launch Program",
+        "program": "${file}",
+        "stopOnEntry": false
+    },
+        {
             "name": "Python: Current File",
             "type": "python",
             "request": "launch",
