@@ -28,6 +28,9 @@ function lable_states(N, st, st_rv)#The N indicate the length of the Heisenbreg
     end
 end
 
+function ()
+    
+end
 
 global N = 3
 
