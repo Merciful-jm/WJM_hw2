@@ -1,59 +1,106 @@
 #= Createn By WJM in Sep.7.2020 =#
 using LinearAlgebra
-#= function sum_string(str_state) #Try to calculate the up-states number.
+
+function state(N)
+    global sta_bas = []
+    for n in 0:2^N-1
+        sta_ba = BitArray(digits(n, base = 2, pad = N))
+        push!(sta_bas,sta_ba)
+    end
+end
+function count_up(sta)
+    global u_n = 0
+    for u in sta[:]
+        if u
+            u_n +=1
+        end
+    end
+end
+function block_state(N)
+    for up in 0:N
+        a = 0
+        temp_sta =[]
+        for s in 1:2^N
+            count_up(sta_bas[s])
+            if up == u_n
+                a = a + 1
+                push!(temp_sta,sta_bas[s])
+            end
+        end
+        push!(M, a)
+        block_stas[up+1] = temp_sta
+        block_stas[up+1] = temp_sta
+    end
+end
+#= function bitarr_to_int(arr) #let the Arrayto the Int number.
+    return sum(arr .* (2 .^ collect(0:1:length(arr)-1)))
 end =#
-function flip(a, i, j)
-    f = split(st[a],"")
-    if  st[a][i] == '1'
-        f[i] = "0"
-        f[j] = "1"
-        
-    else
-        f[i] = "1"
-        f[j] = "0"
+#= function findstate(S, a)  #still had some ting wong!!!!!!!
+    global b = 0
+    b_min = 1;b_max = m
+    while true
+        b = b_min + (b_max-b_min)*0.5
+        b = Int(round(b, digits=0))
+        if S[a] < S[b]#bool can not just so easy to compare eachother.!
+            b_max = b - 1
+        elseif S[a] > S[b]
+            b_min = b + 1
+        else
+            break
+        end
     end
-    global b = st_rv[join(f)] 
-end
+end =#
 
-function lable_states(N, st, st_rv)#The N indicate the length of the Heisenbreg
-    # st = Dict{Int64, String}()#Here "st" stand for the "states"
-    for n in 0:(2^N-1)
-        nn = string(n, base = 2, pad = N)#cut extra part
-        st[(n+1)] = nn
+function flip(S, a, i, j)
+    st_rv = Dict{BitArray, Int64}()
+    for nnn in 1:m
+        nn = S[nnn]#cut extra part
+        st_rv[nn] = (nnn)
     end
-    # st_rv = Dict{String, Int64}()
-    for n in 0:(2^N-1)
-        nn = string(n, base = 2, pad = N)#cut extra part
-        st_rv[nn] = (n+1)
+    global b = 0
+    S[a][i] = ~S[a][i]
+    S[a][j] = ~S[a][j]
+    b = st_rv[S[a]]
+    S[a][i] = ~S[a][i]
+    S[a][j] = ~S[a][j]
+end
+function block_H(N,M)
+    for n in 1:N+1
+        global m = M[n]
+        build_H(n, m)
     end
 end
-
-function ()
-    
+function build_H(n, m)
+    h = zeros(m, m)
+    for a in 1:m
+        for i in 1:N
+            j = mod1(i+1, N)
+            if (block_stas[n][a][i] == block_stas[n][a][j])
+                h[a,a] = h[a,a] + 0.25
+                else
+                    h[a,a] = h[a,a] - 0.25
+                    flip(block_stas[n], a, i, j)
+                    h[a,b] = 0.5
+            end
+        end
+    end
+    push!(H, h)
 end
 
 global N = 3
-
 println("The length of Heisenbreg chain:", N)
-st = Dict{Int64, String}()
-st_rv = Dict{String, Int64}()
-lable_states(N, st, st_rv)
-H = zeros(2^N, 2^N)
-for a in 1:2^N
-    for i in 1:N
-        j = mod1(i+1, N)
-        if st[a][i] == st[a][j]
-            H[a,a] = H[a,a] + 0.25
-        else
-            H[a,a] = H[a,a] - 0.25
-            flip(a, i, j)
-            H[a,b] = 0.5
-        end
-        # show(stdout, "text/plain", H);println()
-    end
-end
+global M = []
+state(N)
+global block_stas = Vector{Array}(undef, N+1)
+block_state(N)
+global H = []
+block_H(N,M)
 # show(stdout, "text/plain", H);println()
-e_v = eigvals(H)
-e_s = eigvecs(H)
-show(stdout, "text/plain", e_v);println()
-show(stdout, "text/plain", e_s);println()
+for i in 1:N+1
+    println("###############    The blocks are:", i,"    ###############")
+    E = eigen(H[i])
+    #= println("Eigenvalues:")
+    show(stdout, "text/plain", E.values);println()
+    println("Eigenvectors:")
+    show(stdout, "text/plain", E.vectors);println() =#
+end

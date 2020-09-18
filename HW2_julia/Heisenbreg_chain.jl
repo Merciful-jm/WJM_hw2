@@ -16,15 +16,13 @@ function flip(a, i, j)
 end
 
 function lable_states(N, st, st_rv)#The N indicate the length of the Heisenbreg
-    # st = Dict{Int64, String}()#Here "st" stand for the "states"
-    for n in 0:(2^N-1)
-        nn = string(n, base = 2, pad = N)#cut extra part
-        st[(n+1)] = nn
+    for n in 1:(2^N)
+        nn = string(n-1, base = 2, pad = N)#cut extra part
+        st[(n)] = nn
     end
-    # st_rv = Dict{String, Int64}()
-    for n in 0:(2^N-1)
-        nn = string(n, base = 2, pad = N)#cut extra part
-        st_rv[nn] = (n+1)
+    for n in 1:(2^N)
+        nn = string(n-1, base = 2, pad = N)#cut extra part
+        st_rv[nn] = (n)
     end
 end
 
@@ -46,11 +44,14 @@ for a in 1:2^N
             flip(a, i, j)
             H[a,b] = 0.5
         end
-        # show(stdout, "text/plain", H);println()
+        # show(stdout, "text/plain", H);println() #To see the every step of building 'H'
     end
 end
-# show(stdout, "text/plain", H);println()
-e_v = eigvals(H)
+show(stdout, "text/plain", H);println() #To see the 'H' matrix
+F = eigen(H)
+show(stdout, "text/plain", F);println()
+#= e_v = eigvals(H)
 e_s = eigvecs(H)
 show(stdout, "text/plain", e_v);println()
 show(stdout, "text/plain", e_s);println()
+ =#
